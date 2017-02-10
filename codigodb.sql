@@ -39,23 +39,23 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE questions (
-    userid integer,
-    questionid integer NOT NULL,
-    questiontext text,
-    createtime timestamp without time zone,
+    user_id integer,
+    question_id integer NOT NULL,
+    question_text text,
+    create_time timestamp with time zone DEFAULT ('now'::text)::timestamp without time zone,
     status character varying(64),
-    portid integer,
-    ipaddress character varying(64)
+    port_id integer,
+    ip_address character varying(64)
 );
 
 
 ALTER TABLE questions OWNER TO codi;
 
 --
--- Name: questions_questionid_seq; Type: SEQUENCE; Schema: public; Owner: codi
+-- Name: questions_question_id_seq; Type: SEQUENCE; Schema: public; Owner: codi
 --
 
-CREATE SEQUENCE questions_questionid_seq
+CREATE SEQUENCE questions_question_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -63,13 +63,13 @@ CREATE SEQUENCE questions_questionid_seq
     CACHE 1;
 
 
-ALTER TABLE questions_questionid_seq OWNER TO codi;
+ALTER TABLE questions_question_id_seq OWNER TO codi;
 
 --
--- Name: questions_questionid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: codi
+-- Name: questions_question_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: codi
 --
 
-ALTER SEQUENCE questions_questionid_seq OWNED BY questions.questionid;
+ALTER SEQUENCE questions_question_id_seq OWNED BY questions.question_id;
 
 
 --
@@ -77,24 +77,24 @@ ALTER SEQUENCE questions_questionid_seq OWNED BY questions.questionid;
 --
 
 CREATE TABLE responses (
-    responseid integer NOT NULL,
-    questionid integer,
-    responsetext text,
-    createtime timestamp without time zone,
+    response_id integer NOT NULL,
+    question_id integer,
+    response_text text,
+    create_time timestamp with time zone DEFAULT ('now'::text)::timestamp without time zone,
     status character varying(64),
-    portid integer,
-    ipaddress character varying(64),
-    codesnippet text
+    port_id integer,
+    ip_address character varying(64),
+    code_snippet text
 );
 
 
 ALTER TABLE responses OWNER TO codi;
 
 --
--- Name: responses_responseid_seq; Type: SEQUENCE; Schema: public; Owner: codi
+-- Name: responses_response_id_seq; Type: SEQUENCE; Schema: public; Owner: codi
 --
 
-CREATE SEQUENCE responses_responseid_seq
+CREATE SEQUENCE responses_response_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -102,13 +102,13 @@ CREATE SEQUENCE responses_responseid_seq
     CACHE 1;
 
 
-ALTER TABLE responses_responseid_seq OWNER TO codi;
+ALTER TABLE responses_response_id_seq OWNER TO codi;
 
 --
--- Name: responses_responseid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: codi
+-- Name: responses_response_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: codi
 --
 
-ALTER SEQUENCE responses_responseid_seq OWNED BY responses.responseid;
+ALTER SEQUENCE responses_response_id_seq OWNED BY responses.response_id;
 
 
 --
@@ -118,19 +118,19 @@ ALTER SEQUENCE responses_responseid_seq OWNED BY responses.responseid;
 CREATE TABLE users (
     username character varying(64),
     password character varying(64),
-    questionsasked integer,
-    questionsanswered integer,
-    userid integer NOT NULL
+    questions_asked integer,
+    questions_answered integer,
+    user_id integer NOT NULL
 );
 
 
 ALTER TABLE users OWNER TO codi;
 
 --
--- Name: users_userid_seq; Type: SEQUENCE; Schema: public; Owner: codi
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: public; Owner: codi
 --
 
-CREATE SEQUENCE users_userid_seq
+CREATE SEQUENCE users_user_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -138,79 +138,79 @@ CREATE SEQUENCE users_userid_seq
     CACHE 1;
 
 
-ALTER TABLE users_userid_seq OWNER TO codi;
+ALTER TABLE users_user_id_seq OWNER TO codi;
 
 --
--- Name: users_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: codi
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: codi
 --
 
-ALTER SEQUENCE users_userid_seq OWNED BY users.userid;
-
-
---
--- Name: questions questionid; Type: DEFAULT; Schema: public; Owner: codi
---
-
-ALTER TABLE ONLY questions ALTER COLUMN questionid SET DEFAULT nextval('questions_questionid_seq'::regclass);
+ALTER SEQUENCE users_user_id_seq OWNED BY users.user_id;
 
 
 --
--- Name: responses responseid; Type: DEFAULT; Schema: public; Owner: codi
+-- Name: questions question_id; Type: DEFAULT; Schema: public; Owner: codi
 --
 
-ALTER TABLE ONLY responses ALTER COLUMN responseid SET DEFAULT nextval('responses_responseid_seq'::regclass);
+ALTER TABLE ONLY questions ALTER COLUMN question_id SET DEFAULT nextval('questions_question_id_seq'::regclass);
 
 
 --
--- Name: users userid; Type: DEFAULT; Schema: public; Owner: codi
+-- Name: responses response_id; Type: DEFAULT; Schema: public; Owner: codi
 --
 
-ALTER TABLE ONLY users ALTER COLUMN userid SET DEFAULT nextval('users_userid_seq'::regclass);
+ALTER TABLE ONLY responses ALTER COLUMN response_id SET DEFAULT nextval('responses_response_id_seq'::regclass);
+
+
+--
+-- Name: users user_id; Type: DEFAULT; Schema: public; Owner: codi
+--
+
+ALTER TABLE ONLY users ALTER COLUMN user_id SET DEFAULT nextval('users_user_id_seq'::regclass);
 
 
 --
 -- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner: codi
 --
 
-COPY questions (userid, questionid, questiontext, createtime, status, portid, ipaddress) FROM stdin;
+COPY questions (user_id, question_id, question_text, create_time, status, port_id, ip_address) FROM stdin;
 \.
 
 
 --
--- Name: questions_questionid_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
+-- Name: questions_question_id_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
 --
 
-SELECT pg_catalog.setval('questions_questionid_seq', 1, false);
+SELECT pg_catalog.setval('questions_question_id_seq', 1, false);
 
 
 --
 -- Data for Name: responses; Type: TABLE DATA; Schema: public; Owner: codi
 --
 
-COPY responses (responseid, questionid, responsetext, createtime, status, portid, ipaddress, codesnippet) FROM stdin;
+COPY responses (response_id, question_id, response_text, create_time, status, port_id, ip_address, code_snippet) FROM stdin;
 \.
 
 
 --
--- Name: responses_responseid_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
+-- Name: responses_response_id_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
 --
 
-SELECT pg_catalog.setval('responses_responseid_seq', 1, false);
+SELECT pg_catalog.setval('responses_response_id_seq', 1, false);
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: codi
 --
 
-COPY users (username, password, questionsasked, questionsanswered, userid) FROM stdin;
+COPY users (username, password, questions_asked, questions_answered, user_id) FROM stdin;
 \.
 
 
 --
--- Name: users_userid_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
 --
 
-SELECT pg_catalog.setval('users_userid_seq', 1, false);
+SELECT pg_catalog.setval('users_user_id_seq', 1, false);
 
 
 --
@@ -218,7 +218,7 @@ SELECT pg_catalog.setval('users_userid_seq', 1, false);
 --
 
 ALTER TABLE ONLY questions
-    ADD CONSTRAINT questions_pkey PRIMARY KEY (questionid);
+    ADD CONSTRAINT questions_pkey PRIMARY KEY (question_id);
 
 
 --
@@ -226,7 +226,7 @@ ALTER TABLE ONLY questions
 --
 
 ALTER TABLE ONLY responses
-    ADD CONSTRAINT responses_pkey PRIMARY KEY (responseid);
+    ADD CONSTRAINT responses_pkey PRIMARY KEY (response_id);
 
 
 --
@@ -234,7 +234,7 @@ ALTER TABLE ONLY responses
 --
 
 ALTER TABLE ONLY users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (userid);
+    ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
 
 
 --
@@ -246,19 +246,19 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: questions questions_userid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: codi
+-- Name: questions questions_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: codi
 --
 
 ALTER TABLE ONLY questions
-    ADD CONSTRAINT questions_userid_fkey FOREIGN KEY (userid) REFERENCES users(userid);
+    ADD CONSTRAINT questions_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 
 --
--- Name: responses responses_questionid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: codi
+-- Name: responses responses_question_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: codi
 --
 
 ALTER TABLE ONLY responses
-    ADD CONSTRAINT responses_questionid_fkey FOREIGN KEY (questionid) REFERENCES questions(questionid);
+    ADD CONSTRAINT responses_question_id_fkey FOREIGN KEY (question_id) REFERENCES questions(question_id);
 
 
 --
