@@ -27,7 +27,9 @@ const pool = new pg.Pool(config);
 // run a query on the client, and then return the client to the pool
 pool.connect(function (err, client, done) {
   if (err) {
-    return console.error('error fetching client from pool', err);
+    done();
+    console.log(err);
+    return;
   } else {
     console.log('connected to database');
   }
