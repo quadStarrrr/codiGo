@@ -27,7 +27,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // ROUTEZ!!!
-app.get('/login', dbCtl.login);
+
+app.get('/', (req, res) => {
+  console.log('I see you!');
+  res.status(200).send('pong');
+});
+
+app.post('/login', dbCtl.login);
+
+app.post('/register', dbCtl.register, (req, res) => {
+    res.status(200).json(res.locals.data);
+  });
 
 // Go ye therefore and listen for events on port 3000!
 app.listen(3000, () => {
