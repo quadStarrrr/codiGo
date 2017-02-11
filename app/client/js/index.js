@@ -21,9 +21,5 @@ render(
     </Route>
   </Router>,
   document.getElementById('app')
-)
+);
 
-// render(
-//   <App />,
-//   document.getElementById('app')
-// );
