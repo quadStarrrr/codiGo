@@ -8,7 +8,9 @@ class QuestionForm extends Component {
   render() {
     return (
       <form onSubmit={this.props.handleFormSubmit}>
-          <input type="text"/>
+          <input type="text" placeholder="question title"/>
+          <textarea placeholder="enter your question here"></textarea>
+          <input type="submit">post</input>
       </form>
     )
   }

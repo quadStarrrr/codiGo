@@ -13,13 +13,13 @@ class Login extends Component {
       <div>
         <h1>codiGo</h1>
         <form onSubmit={this.props.handleLogin}>
-          <input type="text" value={this.props.username} onChange={this.props.handleLoginChange} placeholder="username"/>
+          <input type="text" /*value={this.props.username}*/ onChange={this.props.handleLoginChange} placeholder="username"/>
           <br/>
-          <input type="password" value={this.props.password} onChange={this.props.handleLoginChange} placeholder="password"/>
+          <input type="password" /*value={this.props.password}*/ onChange={this.props.handleLoginChange} placeholder="password"/>
           <br/>
           <input type="submit" value="Log In" />
         </form>
-        <Link to='/signup'>Sign Up</Link>
+        <Link to='/register'>Sign Up</Link>
       </div>
     )
   }

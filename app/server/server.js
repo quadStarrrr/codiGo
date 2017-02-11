@@ -6,6 +6,10 @@ const logger = require('morgan');
 
 const app = express();
 
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
+
 // pull in our DBI
 const dbCtl = require('./database/controller/db-controller');
 
@@ -39,7 +43,8 @@ app.post('/login',
   dbCtl.login,
  // dbCtl.releaseConnection,
   (req, res) => {
-    res.json(res.locals.data);
+    res.json(res.locals.data).send();
+    // res.redirect('/');
   });
 
 app.post('/register',
@@ -51,6 +56,10 @@ app.post('/register',
     console.log('end of chain, sending', res.locals.data);
     res.json(res.locals.data);
   });
+
+app.get('/home', (req, res) => {
+  res.status(200).json(res.locals.data);
+});
 
 app.post('/createQuestion',
   dbCtl.createQuestion,
@@ -87,7 +96,19 @@ app.get('/loadForum',
     res.json(res.locals.data);
   });
 
+//!!!!!! ONLY FOR TESTING, REMOVE LATER !!!!!!!!!//
+// app.get('*', (req, res) => {
+//   res.send(express.static(path.join(__dirname, './../../build')));
+// });
+
 // Go ye therefore and listen for events on port 3000!
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log('CodiGo Server listening on 3000');
+});
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
 });
