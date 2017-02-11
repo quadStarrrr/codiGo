@@ -12,11 +12,11 @@ import Collaboration from './components/Collaboration.jsx';
         // <Route path='/question/:id' component={} />
 render(
   <Router history={browserHistory}>
-    <Route exact path='/' component={App}>
+    <Route exact path='/' component={App} test="holla">
       <IndexRoute component={Login} />
-      <Route path='signup' component={Signup} />
+      <Route path='register' component={Signup} />
       <Route path='home' component={QuestionContainer} />
-      <Route path='form' component={QuestionForm} />
+      <Route path='createQuestion' component={QuestionForm} />
       <Route path='collaboration' component={Collaboration} />
     </Route>
   </Router>,
