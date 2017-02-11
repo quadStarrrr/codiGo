@@ -43,13 +43,20 @@ class App extends Component {
     console.log('check', e.target.elements.questionTitle.value);
     console.log('check', e.target.elements.questionText.value);
     let reqObj = { 
-      user_id: this.state.user_id,
+      user_id: Number(this.state.user_id),
+      question_title: e.target.elements.questionTitle.value,
       question_text: e.target.elements.questionText.value,
+      question_id: Math.floor(Math.random() * 100000),
+      status: 'open',
       ip_address: '',
-      port_id: '',
+      port_id: 0,
     }
-    axios.post('/createQuestion', reqObj, (req, res) => {
-
+    axios.post('/createQuestion', reqObj)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err);
     });
     console.log('event: ', e);
   }
