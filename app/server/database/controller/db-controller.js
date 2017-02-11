@@ -144,13 +144,14 @@ function login(req, res, next) {
 
 function createQuestion(req, res, next) {
   let qStr = 'INSERT INTO questions ' +
-    '(user_id, question_text, ip_address, port_id) VALUES ($1,$2,$3,$4)';
-  console.log('createQuestion>>>',qStr, req.body);
+    '(user_id, question_text, ip_address, port_id, question_title) VALUES ($1,$2,$3,$4,$5)';
+  console.log('createQuestion>>>', qStr, req.body);
   const query = db.conn.query(qStr,
     [req.body.user_id,
      req.body.question_text,
      req.body.ip_address,
      req.body.port_id,
+     req.body.question_title,
     ]);
 
   // console.log('back from query', query);

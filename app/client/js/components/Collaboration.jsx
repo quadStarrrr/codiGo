@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 
+import brace from 'brace';
+import AceEditor from 'react-ace';
+import 'brace/mode/javascript';
+import 'brace/theme/monokai';
+
 class Collaboration extends Component {
   constructor(props) {
     super(props);
@@ -7,7 +12,15 @@ class Collaboration extends Component {
 //embed the text editor in this component
   render() {
     return (
-      <h1>Collaboration</h1>
+      <div>
+        <h1>Collaboration</h1>
+        <AceEditor
+          mode="javascript"
+          theme="monokai"
+          name="ace"
+          editorProps={{$blockScrolling: true}}
+        />
+      </div>
     )
   }
 }
