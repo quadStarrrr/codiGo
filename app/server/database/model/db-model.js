@@ -1,5 +1,20 @@
 const pg = require('pg');
 
+const db = {};
+const uri = 'postgres://codi:go@localhost/codigodb';
+
+pg.connect(uri, (err, db_) => {
+  if (err) throw new Error(err);
+  db.conn = db_;
+  db.done = () => { console.log('dbDone'); };
+
+  console.log('Connected to codigodb!');
+});
+
+module.exports = db;
+
+/*
+
 // We'll be using connection pooling to minimize the overhead
 // of creating/tearing down new database connections for each user.
 // Create a config to configure both pooling behavior
@@ -12,7 +27,7 @@ const config = {
   password: 'go',           //env var: PGPASSWORD
   host: 'localhost',        // Server hosting the postgres database
   port: 5432,               //env var: PGPORT
-  max: 10,                  // max number of clients in the pool
+  max: 20,                  // max number of clients in the pool
   idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
@@ -40,18 +55,6 @@ pool.connect(function (err, client, done) {
   db.conn = client;
   db.done = done;
 
-/*  client.query('SELECT $1::int AS number', ['1'], function(err, result) {
-  //call `done()` to release the client back to the pool
-  done();
-
-  if(err) {
-    return console.error('error running query', err);
-  }
-
-  console.log(result.rows[0].number);
-  //output: 1
-}); */
-
 });
 
 pool.on('error', function (err, client) {
@@ -66,3 +69,4 @@ pool.on('error', function (err, client) {
 
 
 module.exports = db;
+*/
