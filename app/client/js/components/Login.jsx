@@ -10,18 +10,20 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
-        <h1>codiGo</h1>
-        <form onSubmit={this.props.handleLogin}>
-          <input type="text" /*value={this.props.username}*/ onChange={this.props.handleInputChange} placeholder="username"/>
-          <br/>
-          <input type="password" /*value={this.props.password}*/ onChange={this.props.handleInputChange} placeholder="password"/>
-          <br/>
-          <input type="submit" value="Log In" />
-        </form>
-        <Link to='/register'>Sign Up</Link>
+      <div className="login">
+        <div className="innerLogin">
+          <h1>codiGo</h1>
+          <form className="form-group" onSubmit={this.props.handleLogin}>
+            <input className="form-control" type="text" onChange={this.props.handleInputChange} placeholder="username"/>
+            <br/>
+            <input className="form-control" type="password" onChange={this.props.handleInputChange} placeholder="password"/>
+            <br/>
+            <input className="loginButton btn" type="submit" value="Log In" />
+          </form>
+          <Link to='/register'><input className="loginButton btn" value="Sign Up" /></Link>
+        </div>
       </div>
-    )
+    );
   }
 }
 

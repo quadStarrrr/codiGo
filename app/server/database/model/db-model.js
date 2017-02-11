@@ -6,7 +6,7 @@ const uri = 'postgres://codi:go@localhost/codigodb';
 pg.connect(uri, (err, db_) => {
   if (err) throw new Error(err);
   db.conn = db_;
-  db.done = () => { console.log('dbDone'); };
+  db.done = () => { console.log('dbDone'); }; // stub to replace pooling connection recovery
 
   console.log('Connected to codigodb!');
 });
@@ -14,7 +14,7 @@ pg.connect(uri, (err, db_) => {
 module.exports = db;
 
 /*
-
+// HERE LIE THE BONES OF CONNECTION POOLING... So fragile.  So long...
 // We'll be using connection pooling to minimize the overhead
 // of creating/tearing down new database connections for each user.
 // Create a config to configure both pooling behavior
@@ -66,7 +66,6 @@ pool.on('error', function (err, client) {
   // and so you might want to handle it and at least log it out
   console.error('idle client error', err.message, err.stack);
 });
-
 
 module.exports = db;
 */

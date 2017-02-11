@@ -6,8 +6,9 @@ const logger = require('morgan');
 
 const app = express();
 
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+let server = require('http').createServer(app);
+let io = require('socket.io').listen(server);
+
 
 
 // pull in our DBI
@@ -20,6 +21,7 @@ app.use(logger('dev'));
 // express.static is a piece of middleware that  allows us to serve files
 // (images, stylesheets, etc) from a particular directory
 app.use(express.static(path.join(__dirname, './../../build')));
+
 
 // load up contents of the POST body into request.body
 app.use(bodyParser.json());
@@ -38,10 +40,15 @@ app.get('/', (req, res) => {
   res.status(200).send('pong');
 });
 
+
+app.get('/webrtc', (req, res) => {
+  res.redirect('/test/webRTCtest.html');
+});
+
 app.post('/login',
   dbCtl.verifyUser,
   dbCtl.login,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     res.json(res.locals.data).send();
     // res.redirect('/');
@@ -51,7 +58,7 @@ app.post('/register',
   dbCtl.hashPassword,
   dbCtl.register,
   dbCtl.verifyUser,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     console.log('end of chain, sending', res.locals.data);
     res.json(res.locals.data);
@@ -63,35 +70,35 @@ app.get('/home', (req, res) => {
 
 app.post('/createQuestion',
   dbCtl.createQuestion,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     res.json(res.locals.data);
   });
 
 app.post('/createResponse',
   dbCtl.createResponse,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     res.json(res.locals.data);
   });
 
 app.post('/changeQuestionStatus',
   dbCtl.changeQuestionStatus,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     res.json(res.locals.data);
   });
 
 app.post('/changeResponseStatus',
   dbCtl.changeResponseStatus,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     res.json(res.locals.data);
   });
 
 app.get('/loadForum',
   dbCtl.loadForum,
- // dbCtl.releaseConnection,
+  //dbCtl.releaseConnection,
   (req, res) => {
     res.json(res.locals.data);
   });

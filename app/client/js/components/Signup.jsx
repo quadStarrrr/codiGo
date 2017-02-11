@@ -7,13 +7,19 @@ class Signup extends Component {
 
   render() {
     return (
-      <form onSubmit={this.props.handleSignup}>
-        <input name="username" type="text" onChange={this.props.handleInputChange} placeholder="username"/>
-        <br/>
-        <input name="password" type="password" onChange={this.props.handleInputChange} placeholder="password"/>
-        <br/>
-        <input type="submit" value="Sign Up" />
-      </form>
+      <div className="login">
+        <div className="innerLogin">
+          <form className="form-group" onSubmit={this.props.handleSignup}>
+            <input className="form-control" type="text" onChange={this.props.handleInputChange} placeholder="username"/>
+            <br/>
+            <input className="form-control" type="password" onChange={this.props.handleInputChange} placeholder="password"/>
+            <br/>
+            <input className="loginButton btn" type="submit" value="Sign Up" />
+          </form>
+          <h3>Welcome to</h3>
+          <h2>codiGo</h2>
+        </div>
+      </div>
     )
   }
 }
