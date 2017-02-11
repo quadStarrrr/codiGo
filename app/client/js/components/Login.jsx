@@ -19,7 +19,7 @@ class Login extends Component {
           <br/>
           <input type="submit" value="Log In" />
         </form>
-        <Link to='/signup'>Sign Up</Link>
+        <Link to='/register'>Sign Up</Link>
       </div>
     )
   }

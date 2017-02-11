@@ -6,6 +6,10 @@ const logger = require('morgan');
 
 const app = express();
 
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
+
+
 // pull in our DBI
 const dbCtl = require('./database/controller/db-controller');
 
@@ -52,6 +56,8 @@ app.post('/register',
     res.json(res.locals.data);
   });
 
+// app.get('/home',)
+
 app.post('/createQuestion',
   dbCtl.createQuestion,
  // dbCtl.releaseConnection,
@@ -88,6 +94,13 @@ app.get('/loadForum',
   });
 
 // Go ye therefore and listen for events on port 3000!
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log('CodiGo Server listening on 3000');
+});
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
 });

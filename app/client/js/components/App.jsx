@@ -38,9 +38,9 @@ class App extends Component {
   }
 
   handleFormSubmit(e) {
-    axios.post('/createQuestion', {
+    // axios.get('/home' () => {
 
-    })
+    // });
   }
 
   handleLogin(e) {
@@ -58,6 +58,13 @@ class App extends Component {
 
   handleSignup(e) {
     //handle when a user tries to make an account
+    e.preventDefault();
+    axios.post('/register', { username: this.state.username, password: this.state.password })
+    .then((res) => {
+      console.log(res);
+      this.setState({ user_id: res.data.user_id, password: '' });
+      
+    });
   }
 
   render() {
