@@ -1,21 +1,110 @@
 // pull the database connection over from the model
 const db = require('../model/db-model');
+const bcrypt = require('bcryptjs');
+
+function releaseConnection(req, res, next) {
+  // release the connection back to the pool
+  db.done();
+  console.log('released DB connection back to pool');
+  next();
+}
+
+function hashPassword(req, res, next) {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(req.body.password, salt, (err, hash) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+      } else {
+        req.body.hashedPassword = hash;
+        next();
+      }
+    });
+  });
+}
+
+function verifyUser(req, res, next) {
+  let qStr = 'SELECT * FROM users WHERE username = $1';
+  let query = db.conn.query(qStr, [req.body.username]);
+  console.log('verifyUser>>>', qStr, req.body);
+  query.on('row', (row) => {
+    console.log('row', row.password, req.body.password);
+    bcrypt.compare(req.body.password, row.password, (err, response) => {
+      if (err) {
+        console.log('bcrypt.compare error', err);
+        res.status(500).send(err);
+      } else {
+        console.log('bcrypt.compare', response);
+        if (response === true) {
+          req.body.hashedPassword = row.password;
+          res.locals.data = row;
+          console.log('matched hash');
+          next();
+        } else {
+          db.done();
+          res.status(400).json({ message:
+            {
+              name: 'not authorized',
+              severity: 'WARNING',
+              detail: 'Incorrect Password',
+            },
+          });
+        }
+      }
+    });
+  });
+
+  query.on('end', result => {
+    console.log('end verified:', result.rowCount);
+    if (!result.rowCount) {
+      db.done();
+      res.status(400).json({ message:
+        {
+          name: 'Not Found',
+          severity: 'WARNING',
+          detail: 'User not found',
+        },
+      });
+    }
+  });
+
+  query.on('error', err => {
+    db.done();
+    console.log('error', err);
+    res.status(500).send(err);
+  });
+}
 
 function register(req, res, next) {
   let qStr = 'INSERT INTO users (username, password) VALUES ($1,$2)';
-  console.log(qStr);
-  let query = db.conn.query(qStr, [req.body.username, req.body.password]);
-  query.on('end', (row) => {
-    if (row) {
-      // release the connection back to the pool
-      db.done();
+  console.log('register>>>', qStr, req.body);
+  let query = db.conn.query(qStr, [req.body.username, req.body.hashedPassword]);
+
+  query.on('row', row => {
+    console.log('row', row);
+    next();
+  });
+
+  query.on('end', (result) => {
+    console.log('end - inserted:', result.rowCount);
+    if (result.rowCount) {
       next();
+    } else {
+      res.status(500).json({ message:
+        {
+          name: 'error',
+          severity: 'ERROR',
+          detail: 'Could not store new user',
+          schema: 'public',
+          table: 'users',
+        },
+      });
     }
   });
 
   // error handling
   query.on('error', (err) =>  {
-    db.done();
+    console.log('error', err);
     res.status(400).json({ message: err });
   });
 }
@@ -28,17 +117,17 @@ function register(req, res, next) {
  */
 function login(req, res, next) {
   let qStr = 'SELECT * FROM users WHERE username = $1 and password = $2';
-  console.log(qStr);
-  const query = db.conn.query(qStr, [req.body.username, req.body.password]);
+  console.log('login>>>', qStr, req.body);
+  const query = db.conn.query(qStr, [req.body.username, req.body.hashedPassword]);
 
   query.on('row', row => {
-    if (row) {
+    console.log('row', row.user_id);
+    if (row.user_id) {
       res.status = 200;
       res.locals.data = row;
-      // release the connection back to the pool
-      db.done();
       next();
     } else {
+      // Release the db connection
       db.done();
       res.status(400).json({ message:
         {
@@ -56,7 +145,7 @@ function login(req, res, next) {
 function createQuestion(req, res, next) {
   let qStr = 'INSERT INTO questions ' +
     '(user_id, question_text, ip_address, port_id) VALUES ($1,$2,$3,$4)';
-  console.log(qStr, req.body);
+  console.log('createQuestion>>>',qStr, req.body);
   const query = db.conn.query(qStr,
     [req.body.user_id,
      req.body.question_text,
@@ -71,23 +160,28 @@ function createQuestion(req, res, next) {
     next();
   });
 
-  query.on('end', (row) => {
-    console.log('end', row);
-
-    if (row) {
-      // load up the response
-      res.locals.data = row;
-      // release the connection back to the pool
-      db.done();
+  query.on('end', (result) => {
+    if (result.rowCount) {
       next();
     } else {
-      console.log(query);
+      // Release the db connection
+      db.done();
+      res.status(500).json({ message:
+        {
+          name: 'error',
+          severity: 'ERROR',
+          detail: 'Could not store question',
+          schema: 'public',
+          table: 'responses',
+        },
+      });
     }
   });
 
   // error handling
   query.on('error', (err) =>  {
     console.log('error', err);
+    // release the db connection
     db.done();
     res.status(400).json({ message: err });
   });
@@ -96,7 +190,7 @@ function createQuestion(req, res, next) {
 function createResponse(req, res, next) {
   let qStr = 'INSERT INTO responses ' +
     '(user_id, question_id, response_text, ip_address, port_id) VALUES ($1,$2,$3,$4,$5)';
-  console.log(qStr, req.body);
+  console.log('createResponse>>>', qStr, req.body);
   const query = db.conn.query(qStr,
     [req.body.user_id,
      req.body.question_id,
@@ -110,13 +204,21 @@ function createResponse(req, res, next) {
     next();
   });
 
-  query.on('end', row => {
-    if (row) {
-      // load up the response
-      res.locals.data = row;
-      // release the connection back to the pool
-      db.done();
+  query.on('end', result => {
+    if (result.rowCount) {
       next();
+    } else {
+      // Release the db connection
+      db.done();
+      res.status(500).json({ message:
+        {
+          name: 'error',
+          severity: 'ERROR',
+          detail: 'Could not store response',
+          schema: 'public',
+          table: 'responses',
+        },
+      });
     }
   });
 
@@ -129,7 +231,7 @@ function createResponse(req, res, next) {
 
 function loadForum(req, res, next) {
   let qStr = 'SELECT * FROM questions';
-  console.log(qStr);
+  console.log('loadForum>>>', qStr);
   const query = db.conn.query(qStr);
   let questions = [];
 
@@ -152,14 +254,13 @@ function loadForum(req, res, next) {
 
   query.on('end', () => {
     res.locals.data = questions;
-    // release the connection back to the pool
-    db.done();
     next();
   });
 }
 
 function changeQuestionStatus(req, res, next) {
   let qStr = 'UPDATE questions SET status = $1 where question_id = $2 ';
+  console.log('changeQuestionStatus>>>', qStr);
   const query = db.conn.query(qStr,
     [req.body.status,
       req.body.question_id,
@@ -172,14 +273,8 @@ function changeQuestionStatus(req, res, next) {
     next();
   });
 
-  query.on('end', row => {
-    if (row) {
-      // load up the response
-      res.locals.data = row;
-      // release the connection back to the pool
-      db.done();
+  query.on('end', result => {
       next();
-    }
   });
 
   // error handling
@@ -191,7 +286,7 @@ function changeQuestionStatus(req, res, next) {
 
 function changeResponseStatus(req, res, next) {
   let qStr = 'UPDATE responses SET status = $1 where response_id = $2 ';
-  console.log(qStr);
+  console.log('changeResponseStatus>>>', qStr);
   const query = db.conn.query(qStr,
     [req.body.status,
       req.body.response_id,
@@ -202,14 +297,8 @@ function changeResponseStatus(req, res, next) {
     next();
   });
 
-  query.on('end', row => {
-    if (row) {
-      // load up the response
-      res.locals.data = row;
-      // release the connection back to the pool
-      db.done();
-      next();
-    }
+  query.on('end', result => {
+    next();
   });
 
   // error handling
@@ -227,4 +316,7 @@ module.exports = {
   loadForum,
   changeQuestionStatus,
   changeResponseStatus,
+  hashPassword,
+  releaseConnection,
+  verifyUser,
 };
