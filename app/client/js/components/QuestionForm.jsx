@@ -7,7 +7,7 @@ class QuestionForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.props.handleFormSubmit}>
           <input type="text"/>
       </form>
     )
