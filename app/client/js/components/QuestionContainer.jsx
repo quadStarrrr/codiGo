@@ -17,8 +17,13 @@ class QuestionContainer extends Component {
     axios.get('/loadForum')
       .then(res => {
         const tempArr = [];
-        res.data.forEach((el) => {
-          tempArr.push(<Question id={el.user_id} description={el.question_text} />);
+        res.data.forEach((el, i) => {
+          tempArr.push(<Question 
+                        key={i}
+                        id={el.question_id}
+                        description={el.question_title}
+                        questionText={el.question_text}
+                      />);
         });
         this.setState({ questions: tempArr });
       })
@@ -26,15 +31,14 @@ class QuestionContainer extends Component {
         console.log(err);
       });
 
-  // store respons of each one in <Question title="Test" description="testing 123" />
+  // store response of each one in <Question title="Test" description="testing 123" />
   }
 
   render() {
     return (
       <div className="question-container">
         <div>
-          <h1>{this.props.username}</h1>
-          <h1>Hello</h1>
+          <h1>Hello {this.props.username}</h1>
           <Link to='/createQuestion'>Form</Link>
         </div>
         {this.state.questions}

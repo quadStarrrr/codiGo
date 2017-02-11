@@ -8,18 +8,14 @@ class Signup extends Component {
   render() {
     return (
       <form onSubmit={this.props.handleSignup}>
-        <input type="text" value={this.props.username} onChange={this.props.handleChange} placeholder="username"/>
+        <input name="username" type="text" onChange={this.props.handleInputChange} placeholder="username"/>
         <br/>
-        <input type="password" value={this.props.password} onChange={this.props.handleChange} placeholder="password"/>
+        <input name="password" type="password" onChange={this.props.handleInputChange} placeholder="password"/>
         <br/>
         <input type="submit" value="Sign Up" />
       </form>
     )
   }
 }
-
-// Signup.propTypes = {
-//   msg: React.PropTypes.string.isRequired
-// };
 
 export default Signup;
