@@ -77,10 +77,11 @@ ALTER SEQUENCE questions_question_id_seq OWNED BY questions.question_id;
 --
 
 CREATE TABLE responses (
+    user_id integer,
     response_id integer NOT NULL,
     question_id integer,
     response_text text,
-    create_time timestamp with time zone DEFAULT ('now'::text)::timestamp without time zone,
+    create_time timestamp with time zone DEFAULT now(),
     status character varying(64),
     port_id integer,
     ip_address character varying(64),
@@ -187,7 +188,7 @@ SELECT pg_catalog.setval('questions_question_id_seq', 1, false);
 -- Data for Name: responses; Type: TABLE DATA; Schema: public; Owner: codi
 --
 
-COPY responses (response_id, question_id, response_text, create_time, status, port_id, ip_address, code_snippet) FROM stdin;
+COPY responses (user_id, response_id, question_id, response_text, create_time, status, port_id, ip_address, code_snippet) FROM stdin;
 \.
 
 
@@ -203,6 +204,10 @@ SELECT pg_catalog.setval('responses_response_id_seq', 1, false);
 --
 
 COPY users (username, password, questions_asked, questions_answered, user_id) FROM stdin;
+kobe	lakers	\N	\N	1
+\N	\N	\N	\N	3
+bobby	hi	\N	\N	4
+\N	\N	\N	\N	5
 \.
 
 
@@ -210,7 +215,7 @@ COPY users (username, password, questions_asked, questions_answered, user_id) FR
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
 --
 
-SELECT pg_catalog.setval('users_user_id_seq', 1, false);
+SELECT pg_catalog.setval('users_user_id_seq', 6, true);
 
 
 --
@@ -259,6 +264,14 @@ ALTER TABLE ONLY questions
 
 ALTER TABLE ONLY responses
     ADD CONSTRAINT responses_question_id_fkey FOREIGN KEY (question_id) REFERENCES questions(question_id);
+
+
+--
+-- Name: responses responses_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: codi
+--
+
+ALTER TABLE ONLY responses
+    ADD CONSTRAINT responses_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(user_id);
 
 
 --

@@ -1,5 +1,26 @@
 // pull the database connection over from the model
 const db = require('../model/db-model');
+const bcrypt = require('bcryptjs');
+
+bcrypt.genSalt(10, function(err, salt) {
+  bcrypt.hash('B4c0/\/', salt, function(err, hash) {
+    // Store hash in db
+  })
+})
+
+bcrypt.compare(req.body.password, hash, function(err, res) {
+  if (err) {
+    res.statusCode(400).send(err);
+  } else {
+    if (res) {
+      res.status(200).send(res);
+    } else {
+      res.status(400).send('Your password is not correct');
+    }
+  }
+})
+
+
 
 function stuff(req, res) {
   const results = [];

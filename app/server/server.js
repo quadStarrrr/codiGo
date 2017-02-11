@@ -58,11 +58,11 @@ app.post('/register', dbCtl.register, (req, res) => {
     res.status(200).json(res.locals.data);
   });
 
-app.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: true }),
-);
+// app.post('/login',
+//   passport.authenticate('local', { successRedirect: '/',
+//                                    failureRedirect: '/login',
+//                                    failureFlash: true }),
+// );
 
 // Go ye therefore and listen for events on port 3000!
 app.listen(3000, () => {
