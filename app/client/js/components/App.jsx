@@ -56,6 +56,7 @@ class App extends Component {
     })
     .catch((error) => {
       // console.log(error);
+      alert("username or password don't match");
     });
   }
 
@@ -76,6 +77,9 @@ class App extends Component {
       console.log(res);
       this.setState({ user_id: res.data.user_id, password: '' });
       this.props.router.push('/home');
+    })
+    .catch((err) => {
+      alert('username already exists, you dufus');
     });
   }
 
