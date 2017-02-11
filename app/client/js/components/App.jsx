@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Router from 'react-router';
 
 // require("css!./stylesheet.css");
 // import { Router, Route, IndexRoute, browserHistory } from 'react-router';
@@ -38,14 +39,34 @@ class App extends Component {
   }
 
   handleFormSubmit(e) {
-    // axios.get('/home' () => {
+    // let reqObj = { 
+    //   user_id: req.body.user_id,
+    //   question_text: req.body.question_text,
+    //   ip_address: req.body.ip_address,
+    //   port_id: req.body.port_id,
+    // }
+    // axios.post('/createQuestion', reqObj, (req, res) => {
 
     // });
+    console.log('event: ', e);
   }
 
   handleLogin(e) {
     e.preventDefault();
     //make post request to database to login the user
+    axios.post('/login', { username: this.state.username, password: this.state.password })
+    .then((res) => {
+      this.setState({ user_id: res.data.user_id });
+      console.log('login-response: ', res);
+      if (res.status === 200) {
+        //redirect to /home
+        console.log('good response');
+        Router.browserHistory.push('/home');
+      }
+    })
+    .catch((error) => {
+      // console.log(error);
+    });
   }
 
   handleLoginChange(e) {
@@ -68,15 +89,14 @@ class App extends Component {
   }
 
   render() {
-    console.log(this)
     return ( 
       <div>
         {React.cloneElement(
           this.props.children, 
           {username: this.state.username, 
           password: this.state.password, 
-          handleSubmit: this.handleLogin, 
-          handleChange: this.handleLoginChange,
+          handleLogin: this.handleLogin, 
+          handleLoginChange: this.handleLoginChange,
           handleSignup: this.handleSignup}
         )}
       </div>
