@@ -10,9 +10,9 @@ class Signup extends Component {
       <div className="login">
         <div className="innerLogin">
           <form className="form-group" onSubmit={this.props.handleSignup}>
-            <input className="form-control" type="text" onChange={this.props.handleChange} placeholder="username"/>
+            <input className="form-control" type="text" onChange={this.props.handleInputChange} placeholder="username"/>
             <br/>
-            <input className="form-control" type="password" onChange={this.props.handleChange} placeholder="password"/>
+            <input className="form-control" type="password" onChange={this.props.handleInputChange} placeholder="password"/>
             <br/>
             <input className="loginButton btn" type="submit" value="Sign Up" />
           </form>
