@@ -263,8 +263,7 @@ function changeQuestionStatus(req, res, next) {
   console.log('changeQuestionStatus>>>', qStr);
   const query = db.conn.query(qStr,
     [req.body.status,
-      req.body.question_id,
-    ]);
+     req.body.question_id,]);
 
   console.log(qStr, req.body);
 
@@ -274,7 +273,20 @@ function changeQuestionStatus(req, res, next) {
   });
 
   query.on('end', result => {
+    console.log('end - updated:', result.rowCount);
+    if (result.rowCount) {
       next();
+    } else {
+      res.status(400).json({ message:
+        {
+          name: 'error',
+          severity: 'ERROR',
+          detail: 'No question found',
+          schema: 'public',
+          table: 'questions',
+        },
+      });
+    }
   });
 
   // error handling
@@ -301,10 +313,21 @@ function changeResponseStatus(req, res, next) {
     next();
   });
 
-  // error handling
-  query.on('error', (err) =>  {
-    db.done();
-    res.status(400).json({ message: err });
+  query.on('end', result => {
+    console.log('end - updated:', result.rowCount);
+    if (result.rowCount) {
+      next();
+    } else {
+      res.status(400).json({ message:
+        {
+          name: 'error',
+          severity: 'ERROR',
+          detail: 'No response found',
+          schema: 'public',
+          table: 'responses',
+        },
+      });
+    }
   });
 }
 
