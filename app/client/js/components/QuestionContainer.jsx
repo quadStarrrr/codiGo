@@ -1,24 +1,33 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import axios from 'axios';
+import Question from './Question.jsx';
 
 class QuestionContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      questions: []
+    }
   }
 
-  componentDidMount() {
-    //make request to our database to get list of questions
-    axios.get('192.168.0.55:3000/loadForum')
-      .then(res => console.log(res));
-  }
+  // componentDidMount() {
+  //   //make request to our database to get list of questions
+  //   //update questions arr
+  //   axios.get()
+  //     .then(res => console.log(res));
+  // store respons of each one in <Question title="Test" description="testing 123" />
+  // }
 
   render() {
-    console.log(this.props.children)
     return (
-      <div>
-        <h1>Hello</h1>
-        <Link to='/form'>Form</Link>
-        {this.props.children}
+      <div className="question-container">
+        <div>
+          <h1>{this.props.username}</h1>
+          <h1>Hello</h1>
+          <Link to='/form'>Form</Link>
+        </div>
+        {this.state.questions}
       </div>
     )
   }
