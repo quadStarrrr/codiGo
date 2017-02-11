@@ -45,8 +45,12 @@ CREATE TABLE questions (
     create_time timestamp with time zone DEFAULT ('now'::text)::timestamp without time zone,
     status character varying(64),
     port_id integer,
+<<<<<<< HEAD
+    ip_address character varying(64)
+=======
     ip_address character varying(64),
     question_title character varying(128) NOT NULL
+>>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
 );
 
 
@@ -175,7 +179,11 @@ ALTER TABLE ONLY users ALTER COLUMN user_id SET DEFAULT nextval('users_user_id_s
 -- Data for Name: questions; Type: TABLE DATA; Schema: public; Owner: codi
 --
 
+<<<<<<< HEAD
+COPY questions (user_id, question_id, question_text, create_time, status, port_id, ip_address) FROM stdin;
+=======
 COPY questions (user_id, question_id, question_text, create_time, status, port_id, ip_address, question_title) FROM stdin;
+>>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
 \.
 
 
@@ -210,6 +218,8 @@ kobe	lakers	\N	\N	1	\N
 \N	\N	\N	\N	3	\N
 bobby	hi	\N	\N	4	\N
 \N	\N	\N	\N	5	\N
+<<<<<<< HEAD
+=======
 derek	$2a$10$hLhpG/krM.jo04tb47ZbTefzHkb63eKgZUfLP3B.Ux3BU21LVOMBC	0	0	7	\N
 derek2	$2a$10$AN22J/NAJoaS6pb0q3eRhuSBC8GTXFzHdAfn77iGP8jpnmbXoLKHy	0	0	9	\N
 derek3	$2a$10$DctBSaLDMlkGUG9dKko4oOY3aoei3rFK1oHfS.RzMJDcTE4Q/TjU6	0	0	10	\N
@@ -256,6 +266,7 @@ kareem63	$2a$10$emiR/n7EWwXo5hn9aY2VV.n9Yz88kd3pGZzXuj1eMmNE/7.iR3Vdq	0	0	53	\N
 kareem64	$2a$10$0UklkgjLSy4I5GRDFhPirOke/WbYBCJ06TYzPsrUq4cHIi2cX4kGS	0	0	54	\N
 kareem65	$2a$10$sBlL.HWFLYb6YUk95pbUmuDNGDYBLpgOFzNi9GkmcJfCb2qv1V8J.	0	0	55	$2a$10$Gret90bQznJzELzu5oQv6eBCSByS.wAHj8aYKl4RVbjvqzP35QAdq
 kareem66	$2a$10$3IsZd4GiLxDUIxLOtbkTR.T.GlwOjLdCHTxXHyLkbllO/umYkKDXK	0	0	56	$2a$10$l48EpdnsfzYR5JBU7VvDReK.XOPy65KSSB0XXxUXDPwZxAVZ9rM5W
+>>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
 \.
 
 
@@ -263,7 +274,11 @@ kareem66	$2a$10$3IsZd4GiLxDUIxLOtbkTR.T.GlwOjLdCHTxXHyLkbllO/umYkKDXK	0	0	56	$2a
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: codi
 --
 
+<<<<<<< HEAD
+SELECT pg_catalog.setval('users_user_id_seq', 6, true);
+=======
 SELECT pg_catalog.setval('users_user_id_seq', 56, true);
+>>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
 
 
 --

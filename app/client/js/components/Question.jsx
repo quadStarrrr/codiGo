@@ -3,10 +3,11 @@ import { Link } from 'react-router';
 
 const Question = props => {
   return (
-    <div>
-      <h2><Link to='/collaboration'>{props.description}</Link></h2>
+
+    <div lassName="question">
+      <h2 className="user-name"><Link to='/collaboration'>{props.description}</Link></h2>
       <span>{props.username}</span>
-      <p>{props.questionText}</p>
+      <div className="question-text">{props.questionText}</div>
     </div>
   )
 }

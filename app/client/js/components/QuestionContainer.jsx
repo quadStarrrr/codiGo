@@ -38,11 +38,13 @@ class QuestionContainer extends Component {
   render() {
     return (
       <div className="question-container">
-        <div>
+        <div className="question-box">
           <h1>Hello {this.props.username}</h1>
-          <Link to='/createQuestion'>Form</Link>
+          <Link to='/createQuestion'><input className="loginButton btn" value="Ask a Question" /></Link>
         </div>
-        {this.state.questions}
+        <div className="questions">
+          {this.state.questions}
+        </div>
       </div>
     )
   }

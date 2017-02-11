@@ -1,0 +1,28 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn add bootstrap
+
+PATH: 
+  /Applications/Postgres.app/Contents/Versions/9.4/bin:/usr/local:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+
+Yarn version: 
+  0.19.1
+
+Node version: 
+  6.9.2
+
+Platform: 
+  darwin x64
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: getaddrinfo ENOTFOUND registry.yarnpkg.com registry.yarnpkg.com:443
+      at errnoException (dns.js:28:10)
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:76:26)
