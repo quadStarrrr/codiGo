@@ -27,16 +27,52 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // ROUTEZ!!!
-
 app.get('/', (req, res) => {
   console.log('I see you!');
   res.status(200).send('pong');
 });
 
-app.post('/login', dbCtl.login);
+app.post('/login',
+  dbCtl.login,
+  (req, res) => {
+    res.json(res.locals.data);
+  });
 
-app.post('/register', dbCtl.register, (req, res) => {
-    res.status(200).json(res.locals.data);
+app.post('/register',
+  dbCtl.register,
+  dbCtl.login,
+  (req, res) => {
+    res.json(res.locals.data);
+  });
+
+app.post('/createQuestion',
+  dbCtl.createQuestion,
+  (req, res) => {
+    res.json(res.locals.data);
+  });
+
+app.post('/createResponse',
+  dbCtl.createResponse,
+  (req, res) => {
+    res.json(res.locals.data);
+  });
+
+app.post('/changeQuestionStatus',
+  dbCtl.changeQuestionStatus,
+  (req, res) => {
+    res.json(res.locals.data);
+  });
+
+app.post('/changeResponseStatus',
+  dbCtl.changeResponseStatus,
+  (req, res) => {
+    res.json(res.locals.data);
+  });
+
+app.get('/loadForum',
+  dbCtl.loadForum,
+  (req, res) => {
+    res.json(res.locals.data);
   });
 
 // Go ye therefore and listen for events on port 3000!
