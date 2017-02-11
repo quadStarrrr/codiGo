@@ -1,6 +1,7 @@
 // pull the database connection over from the model
 const db = require('../model/db-model');
 const bcrypt = require('bcryptjs');
+const cookieController = require('./cookie-controller');
 
 
 function releaseConnection(req, res, next) {
@@ -117,6 +118,7 @@ function register(req, res, next) {
  * @param res
  */
 function login(req, res, next) {
+
   let qStr = 'SELECT * FROM users WHERE username = $1 and password = $2';
   console.log('login>>>', qStr, req.body);
   const query = db.conn.query(qStr, [req.body.username, req.body.hashedPassword]);
@@ -308,6 +310,8 @@ function changeResponseStatus(req, res, next) {
     res.status(400).json({ message: err });
   });
 }
+
+
 
 module.exports = {
   register,

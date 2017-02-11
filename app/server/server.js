@@ -3,34 +3,18 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+// const passport = require('passport');
+// const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
 
 // pull in our DBI
 const dbCtl = require('./database/controller/db-controller');
+const cookieController = require('./database/controller/cookie-controller');
 
 // MIDDLEWAREZ!
 // log connections and server responses
 app.use(logger('dev'));
-
-// Define the strategy for using passport which will be 
-// used to authenticate users
-passport.use(new LocalStrategy(
-  (username, password, done) => {
-    User.findOne({ username: username }, (err, user) => {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password' });
-      }
-      return done(null, user);
-    });
-  }
-));
 
 // express.static is a piece of middleware that  allows us to serve files
 // (images, stylesheets, etc) from a particular directory
@@ -54,6 +38,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login',
+  cookieController.checkCookie,
   dbCtl.verifyUser,
   dbCtl.login,
  // dbCtl.releaseConnection,
@@ -65,6 +50,7 @@ app.post('/register',
   dbCtl.hashPassword,
   dbCtl.register,
   dbCtl.verifyUser,
+  cookieController.setCookie,
  // dbCtl.releaseConnection,
   (req, res) => {
     console.log('end of chain, sending', res.locals.data);
@@ -116,3 +102,21 @@ app.get('/loadForum',
 app.listen(3000, () => {
   console.log('CodiGo Server listening on 3000');
 });
+
+
+// Define the strategy for using passport which will be 
+// used to authenticate users
+// passport.use(new LocalStrategy(
+//   (username, password, done) => {
+//     User.findOne({ username: username }, (err, user) => {
+//       if (err) { return done(err); }
+//       if (!user) {
+//         return done(null, false, { message: 'Incorrect username' });
+//       }
+//       if (!user.validPassword(password)) {
+//         return done(null, false, { message: 'Incorrect password' });
+//       }
+//       return done(null, user);
+//     });
+//   }
+// ));

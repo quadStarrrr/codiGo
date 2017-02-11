@@ -119,9 +119,10 @@ ALTER SEQUENCE responses_response_id_seq OWNED BY responses.response_id;
 CREATE TABLE users (
     username character varying(64),
     password character varying(64),
-    questions_asked integer,
-    questions_answered integer,
-    user_id integer NOT NULL
+    questions_asked integer DEFAULT 0,
+    questions_answered integer DEFAULT 0,
+    user_id integer NOT NULL,
+    cookie_id character varying(256)
 );
 
 
@@ -203,11 +204,11 @@ SELECT pg_catalog.setval('responses_response_id_seq', 1, false);
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: codi
 --
 
-COPY users (username, password, questions_asked, questions_answered, user_id) FROM stdin;
-kobe	lakers	\N	\N	1
-\N	\N	\N	\N	3
-bobby	hi	\N	\N	4
-\N	\N	\N	\N	5
+COPY users (username, password, questions_asked, questions_answered, user_id, cookie_id) FROM stdin;
+kobe	lakers	\N	\N	1	\N
+\N	\N	\N	\N	3	\N
+bobby	hi	\N	\N	4	\N
+\N	\N	\N	\N	5	\N
 \.
 
 
