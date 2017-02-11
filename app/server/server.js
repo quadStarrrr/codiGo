@@ -6,8 +6,9 @@ const logger = require('morgan');
 
 const app = express();
 
-var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+let server = require('http').createServer(app);
+let io = require('socket.io').listen(server);
+
 
 
 // pull in our DBI
@@ -20,6 +21,7 @@ app.use(logger('dev'));
 // express.static is a piece of middleware that  allows us to serve files
 // (images, stylesheets, etc) from a particular directory
 app.use(express.static(path.join(__dirname, './../../build')));
+
 
 // load up contents of the POST body into request.body
 app.use(bodyParser.json());
@@ -36,6 +38,11 @@ app.use((req, res, next) => { console.log('incoming request', req.body); next();
 app.get('/', (req, res) => {
   console.log('I see you!');
   res.status(200).send('pong');
+});
+
+
+app.get('/webrtc', (req, res) => {
+  res.redirect('/test/webRTCtest.html');
 });
 
 app.post('/login',
