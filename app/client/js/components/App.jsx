@@ -29,7 +29,7 @@ class App extends Component {
     this.state = {
       username: '',
       password: '',
-      user_id: ''
+      user_id: '',
     }
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -39,15 +39,18 @@ class App extends Component {
   }
 
   handleFormSubmit(e) {
-    // let reqObj = { 
-    //   user_id: req.body.user_id,
-    //   question_text: req.body.question_text,
-    //   ip_address: req.body.ip_address,
-    //   port_id: req.body.port_id,
-    // }
-    // axios.post('/createQuestion', reqObj, (req, res) => {
+    e.preventDefault();
+    console.log('check', e.target.elements.questionTitle.value);
+    console.log('check', e.target.elements.questionText.value);
+    let reqObj = { 
+      user_id: this.state.user_id,
+      question_text: e.target.elements.questionText.value,
+      ip_address: '',
+      port_id: '',
+    }
+    axios.post('/createQuestion', reqObj, (req, res) => {
 
-    // });
+    });
     console.log('event: ', e);
   }
 
@@ -60,8 +63,7 @@ class App extends Component {
       console.log('login-response: ', res);
       if (res.status === 200) {
         //redirect to /home
-        console.log('good response');
-        Router.browserHistory.push('/home');
+        this.props.router.push('/home');  
       }
     })
     .catch((error) => {
@@ -97,6 +99,7 @@ class App extends Component {
           password: this.state.password, 
           handleLogin: this.handleLogin, 
           handleLoginChange: this.handleLoginChange,
+          handleFormSubmit: this.handleFormSubmit,
           handleSignup: this.handleSignup}
         )}
       </div>

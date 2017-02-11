@@ -11,13 +11,23 @@ class QuestionContainer extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   //make request to our database to get list of questions
-  //   //update questions arr
-  //   axios.get()
-  //     .then(res => console.log(res));
+  componentDidMount() {
+    //make request to our database to get list of questions
+    //update questions arr
+    axios.get('/loadForum')
+      .then(res => {
+        const tempArr = [];
+        res.data.forEach((el) => {
+          tempArr.push(<Question id={el.user_id} description={el.question_text} />);
+        });
+        this.setState({ questions: tempArr });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   // store respons of each one in <Question title="Test" description="testing 123" />
-  // }
+  }
 
   render() {
     return (
@@ -25,12 +35,13 @@ class QuestionContainer extends Component {
         <div>
           <h1>{this.props.username}</h1>
           <h1>Hello</h1>
-          <Link to='/form'>Form</Link>
+          <Link to='/createQuestion'>Form</Link>
         </div>
         {this.state.questions}
       </div>
     )
   }
 }
+
 
 export default QuestionContainer;

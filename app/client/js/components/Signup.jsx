@@ -18,4 +18,8 @@ class Signup extends Component {
   }
 }
 
+// Signup.propTypes = {
+//   msg: React.PropTypes.string.isRequired
+// };
+
 export default Signup;
