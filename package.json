@@ -5,6 +5,9 @@
   "repository": "https://github.com/matzewagner/codiGo",
   "author": "Matthias Wagner <matzewagner@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node app/server/server.js"
+  },
   "dependencies": {
     "axios": "^0.15.3",
     "babel-core": "^6.22.1",

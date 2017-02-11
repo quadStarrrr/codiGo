@@ -22,7 +22,7 @@ class App extends Component {
     e.preventDefault();
     // console.log('check', e.target.elements.questionTitle.value);
     // console.log('check', e.target.elements.questionText.value);
-    let reqObj = { 
+    let reqObj = {
       user_id: Number(this.state.user_id),
       question_title: e.target.elements.questionTitle.value,
       question_text: e.target.elements.questionText.value,

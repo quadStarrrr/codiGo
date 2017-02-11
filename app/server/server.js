@@ -120,8 +120,9 @@ app.get('/loadForum',
 // );
 =======
 //!!!!!! ONLY FOR TESTING, REMOVE LATER !!!!!!!!!//
-// app.get('*', (req, res) => {
-//   res.send(express.static(path.join(__dirname, './../../build')));
+// app.all('/*', (req, res) => {
+//   console.log('rerouting');
+//   res.sendFile(path.resolve(__dirname, './../../build/index.html'));
 // });
 >>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
 
