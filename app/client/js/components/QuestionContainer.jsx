@@ -18,11 +18,12 @@ class QuestionContainer extends Component {
       .then(res => {
         const tempArr = [];
         res.data.forEach((el, i) => {
-          tempArr.push(<Question 
+          tempArr.unshift(<Question 
                         key={i}
                         id={el.question_id}
                         description={el.question_title}
                         questionText={el.question_text}
+                        username={this.props.username}
                       />);
         });
         this.setState({ questions: tempArr });

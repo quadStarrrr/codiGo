@@ -104,8 +104,9 @@ app.get('/loadForum',
   });
 
 //!!!!!! ONLY FOR TESTING, REMOVE LATER !!!!!!!!!//
-// app.get('*', (req, res) => {
-//   res.send(express.static(path.join(__dirname, './../../build')));
+// app.all('/*', (req, res) => {
+//   console.log('rerouting');
+//   res.sendFile(path.resolve(__dirname, './../../build/index.html'));
 // });
 
 // Go ye therefore and listen for events on port 3000!
