@@ -62,12 +62,7 @@ app.post('/register',
   dbCtl.hashPassword,
   dbCtl.register,
   dbCtl.verifyUser,
-<<<<<<< HEAD
   cookieController.setCookie,
- // dbCtl.releaseConnection,
-=======
-  //dbCtl.releaseConnection,
->>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
   (req, res) => {
     console.log('end of chain, sending', res.locals.data);
     res.json(res.locals.data);
@@ -112,48 +107,16 @@ app.get('/loadForum',
     res.json(res.locals.data);
   });
 
-<<<<<<< HEAD
-// app.post('/login',
-//   passport.authenticate('local', { successRedirect: '/',
-//                                    failureRedirect: '/login',
-//                                    failureFlash: true }),
-// );
-=======
-//!!!!!! ONLY FOR TESTING, REMOVE LATER !!!!!!!!!//
-// app.all('/*', (req, res) => {
-//   console.log('rerouting');
-//   res.sendFile(path.resolve(__dirname, './../../build/index.html'));
-// });
->>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
 
 // Go ye therefore and listen for events on port 3000!
 server.listen(3000, () => {
   console.log('CodiGo Server listening on 3000');
 });
 
-<<<<<<< HEAD
 
-// Define the strategy for using passport which will be 
-// used to authenticate users
-// passport.use(new LocalStrategy(
-//   (username, password, done) => {
-//     User.findOne({ username: username }, (err, user) => {
-//       if (err) { return done(err); }
-//       if (!user) {
-//         return done(null, false, { message: 'Incorrect username' });
-//       }
-//       if (!user.validPassword(password)) {
-//         return done(null, false, { message: 'Incorrect password' });
-//       }
-//       return done(null, user);
-//     });
-//   }
-// ));
-=======
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
   socket.on('my other event', function (data) {
     console.log(data);
   });
 });
->>>>>>> b1462fc20a287ab2c06d9f5e1e184681b9ee2abb
